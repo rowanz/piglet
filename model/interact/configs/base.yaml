@@ -1,0 +1,31 @@
+# This is the configuration file I used for pretraining
+
+data:
+  train_file: "gs://YOURPATH/train-*"
+  val_file: "gs://YOURPATH/val-*"
+model:
+  hidden_size: 256
+  dropout_prob: 0.1
+  activation: tanh
+  fuse_action: true
+device:
+  use_tpu: True
+  num_tpu_cores: 8
+  tpu_run_config: None # This will get loaded in
+  output_dir: "gs://ipk-europe-west4/models/jan23/v2~hsize=256~act=tanh~fuse=True/"
+  train_batch_size: 1024
+  val_batch_size: 32
+  iterations_per_loop: 20000
+
+optimizer:
+  type: "adam_optimizer"
+  learning_rate: 0.001
+  num_train_steps: 5420   # I had 278009 examples total. Let's do 20 epochs or 5420 steps at bsize 1024
+  num_warmup_steps: 1000
+  weight_decay_rate: 0.01
+  clip_norm: 1.0
+  verbose: True
+  param_overrides: [
+  [["LayerNorm", "layer_norm", 'GroupNorm', "bias"], {"weight_decay_rate": 0}],
+  ]
+

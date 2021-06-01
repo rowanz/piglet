@@ -1,0 +1,52 @@
+data:
+  max_frames: 32
+  max_boxes_per_frame: 40
+  max_num_objects: 6
+  max_lang_seq_length: 64
+
+model:
+  use_bfloat16: False
+  efficientnet_b: 0
+
+  hidden_size: 256
+  num_layers: 4
+  dropout_prob: 0.1
+
+  hidden_dropout_prob: 0.1
+  attention_dropout_prob: 0.1
+  use_vision: False
+  lm_size: 'base'
+  init_checkpoint: "fillthisin"
+  interact_checkpoint: "fillthisin"
+
+  lm_loss_coef: 1.0
+
+  fuse_action: True
+  train_time_symbolic_actions_prob: 0.0
+  generate: True
+  test_time_use_symbolic_actions: False
+  test_ppl_only: True
+
+device:
+  use_tpu: True
+  num_tpu_cores: 8
+  tpu_run_config: None # This will get loaded in
+  init_checkpoint: "fillthisin"
+  train_batch_size: 16
+  val_batch_size: 32
+  iterations_per_loop: 5000
+
+optimizer:
+  type: "adam_optimizer"
+  num_epochs: 80
+  warmup_perc: 0.2
+  weight_decay_rate: 0.01
+  clip_norm: 1.0
+  verbose: False
+  learning_rate: 0.00002
+  param_overrides: [
+  [["LayerNorm", "layer_norm", 'GroupNorm', "bias"], {"weight_decay_rate": 0}],
+#  [["apply_action_mlp/", "encode_action/", "encode_affordances/", "^embeddings/", "decoder/"], {"learning_rate": 0}],
+  ]
+
+
