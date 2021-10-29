@@ -17,6 +17,11 @@ See more at [https://rowanzellers.com/piglet](https://rowanzellers.com/piglet)
 
 ## Physical dynamics model
 * You can get data yourself by sampling trajectories in [sampler/](sampler/) and then converting them to `tfrecord` (which is the format I used) in [tfrecord/](tfrecord). I also have the exact tfrecords I used at `gs://piglet-data/physical-interaction-tfrecords/` -- they're big files so I turned on 'requester pays' for them.
+    * These TFrecords contain the world state that we trained on for this paper, and additionally, image frames 😄.
+    * You can download the tfrecords using something like `gsutil -u $myusername gs://piglet/physical-interaction-tfrecords/*.tfrecord .`
+    * Confusingly, the training files are numbered like `0XXXof0256`, but there is no fold 0018. I only realized this after making these tfrecords 😅 so in other words, this was used for my internal experiments too. Basically you hopefully shouldn't have to worry about this at all, just don't panic if you don't see a file like `train-0018of0256.tfrecord`!
+
+
 * You can pretrain the model and evaluate it in [model/interact/train.py](model/interact/train.py) and [model/interact/intrinsic_eval.py](model/interact/intrinsic_eval.py)
 * Alteratively feel free to use my checkpoint: `gs://piglet/checkpoints/physical_dynamics_model/model.ckpt-5420`
 
